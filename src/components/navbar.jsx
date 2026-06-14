@@ -4,13 +4,36 @@ import "../css/navbar.css"
 
 function Navbar() {
     const [theme, setTheme] = useState('dark');
+    const [activeSelection, setActiveSelection] = useState('home')
 
-    // On mount, check if there's a saved theme preference
     useEffect(() => {
         const savedTheme = localStorage.getItem('portfolio-theme') || 'dark';
         setTheme(savedTheme);
         document.documentElement.setAttribute('data-theme', savedTheme);
     }, []);
+
+    useEffect(() => {
+        const sectionIds = ['home', 'about', 'skills', 'projects', 'contact']; // ✅ Fix 1: 'contacts' → 'contact'
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    setActiveSelection(entry.target.id) // ✅ Fix 2: .target → .target.id
+                }
+            })
+        }, {
+            rootMargin: '0px 0px -70% 0px', // activates when section hits top 30% of screen
+            threshold: 0
+        })
+
+        // ✅ Fix 3: actually observe the elements + cleanup (you had neither)
+        sectionIds.forEach((id) => {
+            const el = document.getElementById(id)
+            if (el) observer.observe(el)
+        })
+
+        return () => observer.disconnect()
+    }, []) // ✅ Fix 3 cont: empty [] so it only runs once on mount
 
     const toggleTheme = () => {
         const newTheme = theme === 'dark' ? 'light' : 'dark';
@@ -27,16 +50,14 @@ function Navbar() {
                 <span className="logo-bracket">/&gt;</span>
             </div>
             <ul className="nav-links">
-                <li><a href="#home" className="nav-link active">Home</a></li>
-                <li><a href="#about" className="nav-link">About</a></li>
-                <li><a href="#skills" className="nav-link">Skills</a></li>
-                <li><a href="#projects" className="nav-link">Projects</a></li>
-                <li><a href="#contact" className="nav-link">Contact</a></li>
+                <li><a href="#home" className={`nav-link ${activeSelection === 'home' ? 'active' : ''}`}>Home</a></li>
+                <li><a href="#about" className={`nav-link ${activeSelection === 'about' ? 'active' : ''}`}>About</a></li>
+                <li><a href="#skills" className={`nav-link ${activeSelection === 'skills' ? 'active' : ''}`}>Skills</a></li>
+                <li><a href="#projects" className={`nav-link ${activeSelection === 'projects' ? 'active' : ''}`}>Projects</a></li>
+                <li><a href="#contact" className={`nav-link ${activeSelection === 'contact' ? 'active' : ''}`}>Contact</a></li>
                 
-                {/* Theme Toggle Button */}
                 <button onClick={toggleTheme} className="theme-toggle" aria-label="Toggle Dark/Light Mode">
                     {theme === 'dark' ? (
-                        /* Sun Icon for Dark Mode (Click to switch to Light) */
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                             <circle cx="12" cy="12" r="5"></circle>
                             <line x1="12" y1="1" x2="12" y2="3"></line>
@@ -49,7 +70,6 @@ function Navbar() {
                             <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
                         </svg>
                     ) : (
-                        /* Moon Icon for Light Mode (Click to switch to Dark) */
                         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                             <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
                         </svg>
