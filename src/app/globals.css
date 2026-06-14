@@ -1,0 +1,71 @@
+:root {
+  /* Dark Theme (Default) */
+  --bg-color: #0b0d17;
+  --fg-color: #e8eaf0;
+  --accent-primary: #6c63ff;
+  --accent-secondary: #00d4ff;
+  --accent-warm: #ff6b6b;
+  --surface: #12152a;
+  --surface-light: #1a1e3a;
+  --text-muted: #8b8fa3;
+  --border-color: rgba(108, 99, 255, 0.15);
+  --gradient-primary: linear-gradient(135deg, #6c63ff, #00d4ff);
+  --gradient-warm: linear-gradient(135deg, #ff6b6b, #ffa94d);
+  --glow-primary: 0 0 20px rgba(108, 99, 255, 0.4);
+  --glow-cyan: 0 0 20px rgba(0, 212, 255, 0.4);
+  --navbar-bg: rgba(11, 13, 23, 0.85);
+}
+
+[data-theme="light"] {
+  /* Light Theme Override */
+  --bg-color: #f8f9fa;
+  --fg-color: #1f2937;
+  --surface: #ffffff;
+  --surface-light: #f3f4f6;
+  --text-muted: #6b7280;
+  --border-color: rgba(108, 99, 255, 0.25);
+  --navbar-bg: rgba(248, 249, 250, 0.85);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  background-color: var(--bg-color);
+}
+
+body {
+  background-color: var(--bg-color) !important;
+  color: var(--fg-color) !important;
+  font-family: 'Outfit', sans-serif;
+  overflow-x: hidden;
+  min-height: 100vh;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+button, a {
+  all: unset;
+  display: inline-block;
+  box-sizing: border-box;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--accent-primary);
+  border-radius: 3px;
+}
+
+::selection {
+  background: rgba(108, 99, 255, 0.3);
+  color: #fff;
+}
